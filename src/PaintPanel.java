@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -88,6 +89,19 @@ public class PaintPanel extends JPanel implements ActionListener{
 	public void triggerRepaint() {
 		paintPanel.validate();
 		paintPanel.repaint();
+	}
+	public void stringToLiveCells(String s) {
+		String[] lines = s.split("\\n");
+		for(String line:lines) {
+			String numStr[] = line.split(",");
+			int col = Integer.valueOf(numStr[0]);
+			int row = Integer.valueOf(numStr[1]);
+			Pair p = new Pair(col,row);
+			liveCells.put(p, true); 
+		}
+	}
+	public String liveCellsToString() {
+		return liveCells.keySet().stream().map(p->String.format("%d,%d",p.col, p.row)).collect(Collectors.joining("\n"));
 	}
 	private MouseListener mouseListener = new MouseAdapter() {
 		@Override
